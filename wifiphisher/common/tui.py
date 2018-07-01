@@ -2,7 +2,17 @@
 This module was made to handle the curses sections for the ap selection,
 template selection and the main window
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 import os
 import time
 import re
@@ -702,10 +712,10 @@ class TuiApSel(object):
         """
 
         # get the page boundary
-        page_boundary = range(1 + (ap_info.max_row *
+        page_boundary = list(range(1 + (ap_info.max_row *
                                    (ap_info.page_number - 1)),
                               ap_info.max_row + 1 +
-                              (ap_info.max_row * (ap_info.page_number - 1)))
+                              (ap_info.max_row * (ap_info.page_number - 1))))
 
         # remove previous content and draw border
         ap_info.box.erase()
@@ -993,4 +1003,4 @@ def line_splitter(num_of_words, line):
     """
     pieces = line.split()
     return (" ".join(pieces[i:i + num_of_words])
-            for i in xrange(0, len(pieces), num_of_words))
+            for i in range(0, len(pieces), num_of_words))
