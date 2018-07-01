@@ -1,6 +1,16 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # pylint: skip-file
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import input
+from builtins import *
+from builtins import object
 import subprocess
 import os
 import logging
@@ -236,12 +246,12 @@ def kill_interfering_procs():
             # kill all the processes name equal to interfering_proc
             if interfering_proc in proc:
                 pid = int(proc.split(None, 1)[0])
-                print '[' + G + '+' + W + "] Sending SIGKILL to " +\
-                    interfering_proc
+                print('[' + G + '+' + W + "] Sending SIGKILL to " +\
+                    interfering_proc)
                 os.kill(pid, signal.SIGKILL)
 
 
-class WifiphisherEngine:
+class WifiphisherEngine(object):
     def __init__(self):
         self.mac_matcher = macmatcher.MACMatcher(MAC_PREFIX_FILE)
         self.network_manager = interfaces.NetworkManager()
@@ -253,13 +263,13 @@ class WifiphisherEngine:
 
     def stop(self):
         if DEV:
-            print "[" + G + "+" + W + "] Show your support!"
-            print "[" + G + "+" + W + "] Follow us: https://twitter.com/wifiphisher"
-            print "[" + G + "+" + W + "] Like us: https://www.facebook.com/Wifiphisher"
-        print "[" + G + "+" + W + "] Captured credentials:"
+            print("[" + G + "+" + W + "] Show your support!")
+            print("[" + G + "+" + W + "] Follow us: https://twitter.com/wifiphisher")
+            print("[" + G + "+" + W + "] Like us: https://www.facebook.com/Wifiphisher")
+        print("[" + G + "+" + W + "] Captured credentials:")
         for cred in phishinghttp.creds:
             logger.info("Creds: %s", cred)
-            print cred
+            print(cred)
 
         # EM depends on Network Manager.
         # It has to shutdown first.
@@ -274,7 +284,7 @@ class WifiphisherEngine:
         if os.path.isfile('/tmp/wifiphisher-webserver.tmp'):
             os.remove('/tmp/wifiphisher-webserver.tmp')
 
-        print '[' + R + '!' + W + '] Closing'
+        print('[' + R + '!' + W + '] Closing')
         sys.exit(0)
 
     def try_change_mac(self, iface_name, mac_address=None):
@@ -294,7 +304,7 @@ class WifiphisherEngine:
             else:
                 self.network_manager.set_interface_mac_random(iface_name)
         except interfaces.InvalidMacAddressError as err:
-            print("[{0}!{1}] {2}").format(R, W, err)
+            print(("[{0}!{1}] {2}").format(R, W, err))
 
     def start(self):
 
@@ -356,10 +366,10 @@ class WifiphisherEngine:
                 logger.info(
                     "Selecting {} for deauthentication and {} for the rogue Access Point"
                     .format(mon_iface, ap_iface))
-                print(
+                print((
                     "[{0}+{1}] Selecting {0}{2}{1} interface for the deauthentication "
                     "attack\n[{0}+{1}] Selecting {0}{3}{1} interface for creating the "
-                    "rogue Access Point").format(G, W, mon_iface, ap_iface)
+                    "rogue Access Point").format(G, W, mon_iface, ap_iface))
 
                 # randomize the mac addresses
                 if not args.no_mac_randomization:
@@ -387,9 +397,9 @@ class WifiphisherEngine:
                     else:
                         self.try_change_mac(ap_iface)
 
-                print(
+                print((
                     "[{0}+{1}] Selecting {0}{2}{1} interface for creating the "
-                    "rogue Access Point").format(G, W, ap_iface)
+                    "rogue Access Point").format(G, W, ap_iface))
                 logger.info("Selecting {} interface for rogue Access Point"
                             .format(ap_iface))
 
@@ -404,7 +414,7 @@ class WifiphisherEngine:
                 interfaces.InterfaceCantBeFoundError,
                 interfaces.InterfaceManagedByNetworkManagerError) as err:
             logging.exception("The following error has occurred:")
-            print("[{0}!{1}] {2}").format(R, W, err)
+            print(("[{0}!{1}] {2}").format(R, W, err))
 
             time.sleep(1)
             self.stop()
@@ -417,8 +427,8 @@ class WifiphisherEngine:
         if not args.no_mac_randomization:
             logger.info("Changing {} MAC address to {}".format(
                 ap_iface, rogue_ap_mac))
-            print "[{0}+{1}] Changing {2} MAC addr (BSSID) to {3}".format(
-                G, W, ap_iface, rogue_ap_mac)
+            print("[{0}+{1}] Changing {2} MAC addr (BSSID) to {3}".format(
+                G, W, ap_iface, rogue_ap_mac))
 
             if self.opmode.extensions_enabled():
                 mon_mac = self.network_manager.get_interface_mac(mon_iface)
@@ -434,7 +444,7 @@ class WifiphisherEngine:
             self.fw.redirect_requests_localhost()
         set_route_localnet()
 
-        print '[' + T + '*' + W + '] Cleared leases, started DHCP, set up iptables'
+        print('[' + T + '*' + W + '] Cleared leases, started DHCP, set up iptables')
         time.sleep(1)
 
         if args.essid:
@@ -480,12 +490,12 @@ class WifiphisherEngine:
             # copy payload to update directory
             while not payload_path or not os.path.isfile(payload_path):
                 # get payload path
-                payload_path = raw_input(
+                payload_path = input(
                     "[" + G + "+" + W + "] Enter the [" + G + "full path" + W +
                     "] to the payload you wish to serve: ")
                 if not os.path.isfile(payload_path):
-                    print '[' + R + '-' + W + '] Invalid file path!'
-            print '[' + T + '*' + W + '] Using ' + G + payload_path + W + ' as payload '
+                    print('[' + R + '-' + W + '] Invalid file path!')
+            print('[' + T + '*' + W + '] Using ' + G + payload_path + W + ' as payload ')
             template.update_payload_path(os.path.basename(payload_path))
             copyfile(payload_path,
                      PHISHING_PAGES_DIR + template.get_payload_path())
@@ -552,7 +562,7 @@ class WifiphisherEngine:
             self.access_point.set_psk(args.presharedkey)
         if self.opmode.internet_sharing_enabled():
             self.access_point.set_internet_interface(args.internetinterface)
-        print '[' + T + '*' + W + '] Starting the fake access point...'
+        print('[' + T + '*' + W + '] Starting the fake access point...')
         try:
             self.access_point.start()
             self.access_point.start_dhcp_dns()
@@ -595,8 +605,8 @@ class WifiphisherEngine:
         # With configured DHCP, we may now start the web server
         if not self.opmode.internet_sharing_enabled():
             # Start HTTP server in a background thread
-            print '[' + T + '*' + W + '] Starting HTTP/HTTPS server at ports ' + str(
-                PORT) + ", " + str(SSL_PORT)
+            print('[' + T + '*' + W + '] Starting HTTP/HTTPS server at ports ' + str(
+                PORT) + ", " + str(SSL_PORT))
             webserver = Thread(
                 target=phishinghttp.runHTTPServer,
                 args=(NETWORK_GW_IP, PORT, SSL_PORT, template, self.em))
@@ -628,15 +638,15 @@ def run():
         print ('[' + T + '*' + W + '] Starting Wifiphisher %s ( %s ) at %s' %
                (VERSION, WEBSITE, today))
         if BIRTHDAY in today:
-            print '[' + T + '*' + W + \
+            print('[' + T + '*' + W + \
             '] Wifiphisher was first released on this day in 2015! ' \
-            'Happy birthday!'
+            'Happy birthday!')
         if NEW_YEAR in today:
-            print '[' + T + '*' + W + \
-            '] Happy new year!'
+            print('[' + T + '*' + W + \
+            '] Happy new year!')
         engine = WifiphisherEngine()
         engine.start()
     except KeyboardInterrupt:
-        print R + '\n (^C)' + O + ' interrupted\n' + W
+        print(R + '\n (^C)' + O + ' interrupted\n' + W)
     except EOFError:
-        print R + '\n (^D)' + O + ' interrupted\n' + W
+        print(R + '\n (^D)' + O + ' interrupted\n' + W)
