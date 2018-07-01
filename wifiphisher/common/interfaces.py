@@ -4,7 +4,16 @@
 This module was made to handle all the interface related operations of
 the program
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 import random
 from collections import defaultdict
 from subprocess import check_output
@@ -576,7 +585,7 @@ class NetworkManager(object):
         """
 
         possible_adapters = list()
-        for interface, adapter in self._name_to_object.iteritems():
+        for interface, adapter in self._name_to_object.items():
             # check to make sure interface is not active and not already in the possible list
             if (interface not in self._active) and (
                     adapter not in possible_adapters):
@@ -762,7 +771,7 @@ def is_add_vif_required(args):
         :rtype: tuple
         """
         # case 1 : one phy maps to one virtual interface
-        if len(phy_map_vifs) == 1 and len(phy_map_vifs.values()[0]) == 1:
+        if len(phy_map_vifs) == 1 and len(list(phy_map_vifs.values())[0]) == 1:
             # only take the first tuple
             vif_score_tuple = vif_score_tups[0]
             card = vif_score_tuple[0]
@@ -772,7 +781,7 @@ def is_add_vif_required(args):
                 return card, True
         # case 2 : one phy maps to multiple virtual interfaces
         # we don't need to create one more virtual interface in this case
-        elif len(phy_map_vifs) == 1 and len(phy_map_vifs.values()[0]) > 1:
+        elif len(phy_map_vifs) == 1 and len(list(phy_map_vifs.values())[0]) > 1:
             return None, True
         # case 3 : we have multiple phy interfaces but only
         # one card support both monitor and AP and the other
@@ -816,7 +825,7 @@ def is_add_vif_required(args):
         phy_to_vifs[phy_number].append((card, score))
 
     # each phy number map to a sublist containing (card, score)
-    vif_score_tuples = [sublist[0] for sublist in phy_to_vifs.values()]
+    vif_score_tuples = [sublist[0] for sublist in list(phy_to_vifs.values())]
     # sort with score
     vif_score_tuples = sorted(vif_score_tuples, key=lambda tup: -tup[1])
 
