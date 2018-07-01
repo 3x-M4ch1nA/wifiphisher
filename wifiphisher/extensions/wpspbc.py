@@ -8,7 +8,16 @@ Define three WPS states
    we can start using wpa_supplicant/wpa_cli to connect to the AP
 3) WPS_CONNECTED: We have connected to the AP
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from builtins import object
 import logging
 import time
 import os
@@ -21,7 +30,7 @@ import wifiphisher.common.extensions as extensions
 
 logger = logging.getLogger(__name__)
 
-WPS_IDLE, WPS_CONNECTING, WPS_CONNECTED = range(3)
+WPS_IDLE, WPS_CONNECTING, WPS_CONNECTED = list(range(3))
 # wait 3 seconds to give the wps state to the phishinghttp module
 WAIT_CNT = 3
 
