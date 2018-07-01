@@ -4,7 +4,17 @@ Extension that sends 3 DEAUTH/DISAS Frames:
  1 from the client to the AP
  1 to the broadcast address
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import str
+from builtins import *
+from builtins import object
 import logging
 from collections import defaultdict
 import scapy.layers.dot11 as dot11
@@ -273,7 +283,7 @@ class Deauth(object):
         :rtype: list
         """
 
-        return map("DEAUTH/DISAS - {}".format, self._observed_clients)
+        return list(map("DEAUTH/DISAS - {}".format, self._observed_clients))
 
     def send_channels(self):
         """
@@ -291,7 +301,7 @@ class Deauth(object):
         if self._data.target_ap_bssid and not self._data.args.deauth_essid\
                 and not self._data.args.channel_monitor:
             return [self._data.target_ap_channel]
-        return map(str, constants.ALL_2G_CHANNELS)
+        return list(map(str, constants.ALL_2G_CHANNELS))
 
     def on_exit(self):
         """
