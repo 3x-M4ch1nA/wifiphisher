@@ -4,6 +4,15 @@ All logic regarding the Operation Modes (opmodes).
 The opmode is defined based on the user's arguments and the available
 resources of the host system
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 import sys
 import os
 import logging
