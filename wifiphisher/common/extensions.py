@@ -1,7 +1,16 @@
 """
 All logic regarding extensions management
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 import time
 import importlib
 import threading
@@ -211,7 +220,7 @@ class ExtensionManager(object):
 
         # Convert shared_data from dict to named tuple
         shared_data = collections.namedtuple('GenericDict',
-                                             shared_data.keys())(**shared_data)
+                                             list(shared_data.keys()))(**shared_data)
         self._shared_data = shared_data
 
         # Initialize all extensions with the shared data
