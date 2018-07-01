@@ -5,7 +5,18 @@ Extension that capture the four way handshake and
 do the verification whether the password given by
 -pK option is valid
 """
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import chr
+from builtins import range
+from builtins import *
+from builtins import object
+from past.utils import old_div
 import binascii
 import hmac
 import hashlib
@@ -20,7 +31,7 @@ import wifiphisher.common.extensions as extensions
 logger = logging.getLogger(__name__)
 
 # define the verification state
-DONE, FAIL, NOT_YET = range(3)
+DONE, FAIL, NOT_YET = list(range(3))
 
 # backward compatible for scapy EAPOL
 try:
@@ -122,7 +133,7 @@ class Handshakeverify(object):
         blen = 64
         index = 0
         return_array = ''
-        while index <= ((blen * 8 + 159) / 160):
+        while index <= (old_div((blen * 8 + 159), 160)):
             hmacsha1 = hmac.new(
                 key, const_a + chr(0x00) + const_b + chr(index), hashlib.sha1)
             index += 1
